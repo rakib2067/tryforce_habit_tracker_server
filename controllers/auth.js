@@ -12,7 +12,7 @@ async function register (req, res)
         const salt = await bcrypt.genSalt();
         const hashed = await bcrypt.hash(req.body.password, salt);
         console.log("Pass salted and hashed")
-        const user = await User.create( {...req.body, password : hashed });
+        const user = await User.create( {...req.body, password : hashed, salt: salt });
         res.status(201).json(user);
     } 
     catch (err) 
@@ -53,20 +53,28 @@ async function login (req,res)
             console.log('Login error - invalid details');
             res.status(401).json({err});
         }
-
         
-        const authed = bcrypt.compare(req.body.password, user.password);
-        console.log("Authed? " +authed);
+        let salt = user.salt;
+
+        console.log("Salt to check: "+ salt);
+
+        const hashed = await bcrypt.hash(req.body.password, salt);
+        
+        const authed = await bcrypt.compare(hashed, user.password);
+
+        console.log("authed? " + authed)
 
         if (!!authed)
         {
+            console.log("Auth success, logging in")
             const payload = { name: user.name, email: user.email};
             const sendToken = (err, token) =>
             {
                 if (err) {throw new Error ('Token Generation failed')}
+                console.log("sending token");
                 res.status(200).json({ success:true,  token: "Bearer " + token})
             }
-            console.log("sending token");
+            
             jwt.sign(payload, process.env.TOKENKEY, {expiresIn : 3600}, sendToken);
         }
         else
@@ -76,6 +84,7 @@ async function login (req,res)
     }
     catch (err)
     {
+        console.log("somnething went wrong..");
         res.status(401).json({err});
     }
 
