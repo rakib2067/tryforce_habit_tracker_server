@@ -59,7 +59,7 @@ module.exports = class User
         {
             try
             {
-                let userData = await db.query(`SELECT * FROM users WHERE name = $1;`, [name]);
+                let userData = await db.query(`SELECT * FROM users WHERE username = $1;`, [name]);
                 res (userData.rows[0]);
             }
             catch (err)

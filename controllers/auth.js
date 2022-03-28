@@ -38,8 +38,11 @@ async function login(req, res)
 
     try
     {
-        console.log("Finding now...")
-        user = await User.getByName(req.body.username);
+        if (/@/.test(req.body.username)) {
+            user = await User.getByEmail(req.body.username);
+        } else {
+            user = await User.getByName(req.body.username);
+        }
         console.log(user);
         if (user)
         {
