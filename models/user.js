@@ -15,7 +15,6 @@ module.exports = class User
         this.xp = data.xp;
         this.xpTarget = data.xpTarget;
         this.level = data.level;
-        this.salt = data.salt;
     }
 
 
@@ -88,7 +87,7 @@ module.exports = class User
     static async create (userData)
     {
         console.log("Creating user at user model" + userData);
-        let { username, email, password, salt} = userData;
+        let { username, email, password} = userData;
         let rupees = 0;
         let profilePic = 0;
         let xp = 0;
@@ -104,9 +103,9 @@ module.exports = class User
             //console.log("Try catch create user - user model")
             try 
             {
-                let result = await db.query(`INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level, salt)
-                                                          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`, 
-                                                          [username, email, password, rupees, profilePic, xp, xpTarget, level, salt])
+                let result = await db.query(`INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level)
+                                                          VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`, 
+                                                          [username, email, password, rupees, profilePic, xp, xpTarget, level])
                 console.log(`User created with ID: ${result.rows[0].id}`);
                 res(new User(result.rows[0]));
             }

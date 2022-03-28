@@ -58,8 +58,6 @@ async function login(req, res)
             res.status(401).json({err});
         }
         
-        console.log("Salt to check: "+ user.salt);
-
         const authed = await bcrypt.compare(req.body.password, user.password);
 
         console.log("authed? " + authed)

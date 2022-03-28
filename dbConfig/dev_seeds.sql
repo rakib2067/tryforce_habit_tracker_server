@@ -1,4 +1,4 @@
---INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level, salt)
+--INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level)
 --VALUES
 --('Zeiadork','Zeiadork@gmail.com','a',100,2,5,10,0,1),
 --('Nottnott','a@a.col','a',200,3,15,20,1,1),
