@@ -1,9 +1,3 @@
-// router.get('/', habitsController.getAll);
-// router.get('/:id', habitsController.getById);
-// router.post('/',habitsController.create);
-// router.put('/:id',habitsController.update);
-// router.delete('/:id',habitsController.destroy);
-
 const Habit = require('../models/habit');
 
 async function getAll(req, res) 
