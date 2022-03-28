@@ -101,7 +101,7 @@ module.exports = class User
 
         return new Promise (async (res,rej) => 
         {
-            console.log("Try catch create user - user model")
+            //console.log("Try catch create user - user model")
             try 
             {
                 let result = await db.query(`INSERT INTO users (name, email, password, rupees, profilePic, xp, xpTarget, level, salt)
