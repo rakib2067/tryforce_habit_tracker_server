@@ -25,7 +25,7 @@ module.exports = class User
         {
             try 
             {
-                const result = await db.query('SELECT * FROM users;')
+                const result = await db.query('SELECT id, name, email, rupees, profilePic, xp, xpTarget, level FROM users;')
                 const users = result.rows.map(a => new User(a));
                 res(users);
             } 
@@ -37,7 +37,7 @@ module.exports = class User
     }
 
 
-    static findById(id)
+    static getById(id)
     {
         return new Promise (async (res, rej) =>
         {
@@ -53,8 +53,9 @@ module.exports = class User
         });
     }
 
-    static create (name, email, password, rupees = 0, profilePic, xp = 0, xpTarget = 10, level = 0)
+    static create (userData)
     {
+        let { name, email, password, rupees = 0, profilePic, xp = 0, xpTarget = 10, level = 0 } = userData;
         return new Promise (async (res,rej) => 
         {
             try 
@@ -87,13 +88,15 @@ module.exports = class User
         });
     }
 
-    update(id,update)
+    update(updateData)
     {
+        let {id, profilePic} = updateData;
+
         return new Promise (async (res, rej) => 
         {
             try 
             {
-                const result = await db.query('UPDATE users SET profilePic = $1 WHERE id = $2 RETURNING *;', [ update, id ]);
+                const result = await db.query('UPDATE users SET profilePic = $1 WHERE id = $2 RETURNING *;', [ profilePic, id ]);
                 res(result.rows[0])
             } 
             catch (err) 
