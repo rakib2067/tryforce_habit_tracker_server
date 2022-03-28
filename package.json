@@ -3,5 +3,23 @@
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "pg": "^8.7.3"
-  }
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev" : "nodemon index.js"
+  },
+  "name": "api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nottnottloop/tryforce_habit_tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nottnottloop/tryforce_habit_tracker/issues"
+  },
+  "homepage": "https://github.com/nottnottloop/tryforce_habit_tracker#readme",
+  "description": ""
 }
