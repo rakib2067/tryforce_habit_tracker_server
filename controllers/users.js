@@ -31,8 +31,10 @@ async function create (req, res)
 {
     try 
     {
+        console.log("Now creating user at controller");
         const salt = await bcrypt.genSalt();
         const hashed = await bcrypt.hash(req.body.password, salt);
+        console.log("Pass salted and hashed")
         const user = await User.create( {...req.body, password : hashed });
         res.status(201).json(user);
     } 

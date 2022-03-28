@@ -53,16 +53,28 @@ module.exports = class User
         });
     }
 
-    static create (userData)
+    static async create (userData)
     {
-        let { name, email, password, rupees = 0, profilePic, xp = 0, xpTarget = 10, level = 0 } = userData;
+        console.log("Creating user at user model" + userData);
+        let { name, email, password} = userData;
+        let rupees = 0;
+        let profilePic = 0;
+        let xp = 0;
+        let xpTarget = 10;
+        let level = 0;
+
+        console.log("name: " +name);
+        console.log("email: " +email);
+        console.log("password: "  +password);
+
         return new Promise (async (res,rej) => 
         {
+            console.log("Try catch create user - user model")
             try 
             {
-                let result = await db.run(SQL`INSERT INTO users (name, email, password, rupees, profilePic, xp, xpTarget, level)
+                let result = await db.query(`INSERT INTO users (name, email, password, rupees, profilePic, xp, xpTarget, level)
                                                           VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`, 
-                                                          [name, email, password, rupees, profilePic, xp, xpTarget, level]);
+                                                          [name, email, password, rupees = 0, profilePic = 0, xp = 0, xpTarget = 10, level = 0])
                 res(result.rows[0]);
             }
             catch (err)
