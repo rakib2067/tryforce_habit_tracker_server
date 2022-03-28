@@ -7,7 +7,7 @@ module.exports = class User
     constructor(data)
     {
         this.id = data.id;
-        this.name = data.name;
+        this.username = data.username;
         this.email = data.email;
         this.password = data.password;
         this.rupees = data.rupees;
@@ -60,7 +60,7 @@ module.exports = class User
             try
             {
                 let userData = await db.query(`SELECT * FROM users WHERE username = $1;`, [name]);
-                res (userData.rows[0]);
+                res(new User(userData.rows[0]));
             }
             catch (err)
             {
@@ -76,7 +76,7 @@ module.exports = class User
             try
             {
                 let userData = await db.query(`SELECT * FROM users WHERE email = $1;`, [email]);
-                res (userData.rows[0]);
+                res(new User(userData.rows[0]));
             }
             catch (err)
             {
@@ -88,14 +88,14 @@ module.exports = class User
     static async create (userData)
     {
         console.log("Creating user at user model" + userData);
-        let { name, email, password, salt} = userData;
+        let { username, email, password, salt} = userData;
         let rupees = 0;
         let profilePic = 0;
         let xp = 0;
         let xpTarget = 10;
         let level = 0;
 
-        console.log("name: " +name);
+        console.log("username: " +username);
         console.log("email: " +email);
         console.log("password: "  +password);
 
@@ -104,11 +104,11 @@ module.exports = class User
             //console.log("Try catch create user - user model")
             try 
             {
-                let result = await db.query(`INSERT INTO users (name, email, password, rupees, profilePic, xp, xpTarget, level, salt)
+                let result = await db.query(`INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level, salt)
                                                           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`, 
-                                                          [name, email, password, rupees, profilePic, xp, xpTarget, level, salt])
+                                                          [username, email, password, rupees, profilePic, xp, xpTarget, level, salt])
                 console.log(`User created with ID: ${result.rows[0].id}`);
-                res(result.rows[0]);
+                res(new User(result.rows[0]));
             }
             catch (err)
             {
@@ -153,7 +153,7 @@ module.exports = class User
             try 
             {
                 const result = await db.query('UPDATE users SET profilePic = $1 WHERE id = $2 RETURNING *;', [ profilePic, id ]);
-                res(result.rows[0])
+                res(new User(result.rows[0]));
             } 
             catch (err) 
             {

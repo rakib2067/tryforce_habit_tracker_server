@@ -16,7 +16,7 @@ async function register(req, res)
             console.log("Bad request from client, terminating user registration");
             return;
         }
-        console.log("Now creating user at controller");
+        console.log("\nNow creating user at controller");
         const salt = await bcrypt.genSalt();
         const hashed = await bcrypt.hash(req.body.password, salt);
         console.log("Pass salted and hashed")
