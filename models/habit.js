@@ -50,9 +50,6 @@ module.exports = class Habit
         });
     }
 
-    //        this.id = data.id;     this.user_id = data.user_id;     this.title = data.title;      this.frequency = data.frequency;
-    // this.timestampOfLastTrack = data.timestampOfLastTrack;     this.streak = data.streak;     this.category = data.category;
-
     static create (habitData)
     {
         let { user_id, title, frequency, timestampOfLastTrack, streak, category } = habitData;
@@ -72,6 +69,30 @@ module.exports = class Habit
         });
     }
 
-    
+    destroy()
+    {
+        return new Promise (async (res, rej) => 
+        {
+            try 
+            {
+                const result = await db.query('DELETE FROM habits WHERE id = $1 RETURNING id', [ this.id ]);
+                res(`habit ${result.id} yeetus deeletus successus`)
+            } 
+            catch (err) 
+            {
+                rej('user yeetus failus')
+            }
+        });
+    }
+
+    update(updateData)
+    {
+        //TODO
+
+        return new Promise (async (res,rej) =>
+        {
+            rej("Not implemented yet");
+        })
+    }
 
 }

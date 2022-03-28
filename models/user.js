@@ -79,7 +79,18 @@ module.exports = class User
             try 
             {
                 const result = await db.query('DELETE FROM users WHERE id = $1 RETURNING id', [ this.id ]);
-                res(`user ${result.id} yeetus deeletus successus`)
+
+                const habits = await this.habits;
+
+                let idsDeleted = [];
+
+                habits.array.forEach( async (habit) => 
+                {
+                    idsDeleted.push(habit.title);
+                    await habit.destroy();    
+                });
+
+                res(`user ${result.id} and habits ${idsDeleted} yeetus deeletus successus`)
             } 
             catch (err) 
             {
