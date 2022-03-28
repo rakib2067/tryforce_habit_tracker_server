@@ -1,10 +1,3 @@
-// router.get('/', usersController.getAll);
-// router.get('/:id', usersController.getById);
-// router.post('/',usersController.create);
-// router.put('/:id',usersController.update);
-// router.delete('/:id',usersController.destroy);
-// router.get('/:id/habits',usersController.getHabitsbyUserId)
-
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 

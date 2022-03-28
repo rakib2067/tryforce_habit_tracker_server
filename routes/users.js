@@ -5,12 +5,13 @@ const usersController = require('../controllers/users')
 
 //Paths
 router.get('/', usersController.getAll);
-router.get('/:id', usersController.getById);
-router.get('/:id/habits', usersController.getHabitsByUserId);
 router.post('/',usersController.create);
+
+router.get('/:id', usersController.getById);
 router.put('/:id',usersController.update);
 router.delete('/:id',usersController.destroy);
 
+router.get('/:id/habits', usersController.getHabitsByUserId);
 
 //Export
 module.exports = router;
