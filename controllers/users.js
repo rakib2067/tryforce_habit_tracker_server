@@ -80,7 +80,7 @@ async function getHabitsByUserId (req, res)
 {
     try
     {
-        const habits = await User.habits;
+        const habits = await User.habits(req.params.id);
         res.status(200).json(habits);
     }
     catch (err)
