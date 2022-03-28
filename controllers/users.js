@@ -26,11 +26,11 @@ async function getById(req, res)
     };
 }
 
-async function getByName(req, res) 
+async function getByUsername(req, res) 
 {
     try 
     {
-        const user = await User.getByName(req.params.name);
+        const user = await User.getByUsername(req.params.name);
         res.status(200).json(user);
     } 
     catch (err) 
@@ -92,4 +92,4 @@ async function getHabitsByUserId (req, res)
     }
 }
 
-module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByName, getByEmail }
+module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByUsername, getByEmail }

@@ -15,7 +15,7 @@ module.exports = class User
         this.xp = data.xp;
         this.xpTarget = data.xpTarget;
         this.level = data.level;
-
+        this.salt = data.salt;
     }
 
 
@@ -53,7 +53,7 @@ module.exports = class User
         });
     }
 
-    static getByName(name)
+    static getByUsername(name)
     {
         return new Promise (async (res, rej) =>
         {

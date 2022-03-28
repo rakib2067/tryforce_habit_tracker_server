@@ -38,26 +38,19 @@ async function login(req, res)
 
     try
     {
+        let debugString = '';
+        //req.body.username can be a username or email for this purpose
         if (/@/.test(req.body.username)) {
             user = await User.getByEmail(req.body.username);
+            debugString = 'email';
         } else {
-            user = await User.getByName(req.body.username);
+            user = await User.getByUsername(req.body.username);
+            debugString = 'username';
         }
-        console.log(user);
         if (user)
         {
-            console.log("Found user on name: " + user.username);
-        }
-        else if (!user)
-        {
-            console.log("couldn't find user with name: " +req.body.username);
-            user = await User.getByEmail(req.body.username);
-            console.log("Found user on email: " + user.username);
-        }
-        else if (!user)
-        {
-            console.log("couldn't find user with email: " +req.body.username);
-            throw new Error ('Login error - invalid details');
+            console.log(`Found user by ${debugString}: ${req.body.username}`);
+            console.log(user);
         }
         else
         {
@@ -65,13 +58,9 @@ async function login(req, res)
             res.status(401).json({err});
         }
         
-        let salt = user.salt;
+        console.log("Salt to check: "+ user.salt);
 
-        console.log("Salt to check: "+ salt);
-
-        const hashed = await bcrypt.hash(req.body.password, salt);
-        
-        const authed = await bcrypt.compare(hashed, user.password);
+        const authed = await bcrypt.compare(req.body.password, user.password);
 
         console.log("authed? " + authed)
 
@@ -95,7 +84,7 @@ async function login(req, res)
     }
     catch(err)
     {
-        console.log("somnething went wrong..");
+        console.log("something went wrong..");
         res.status(401).json({err});
     }
 
