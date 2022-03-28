@@ -8,9 +8,11 @@ async function register (req, res)
 {
     try 
     {
+        //req.body will contain: 'name', 'email', 'password'
+
         let validRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-        if (req.body.user.length < 8 || !req.body.email.match(validRegex)) {
+        if (req.body.password.length < 8 || !validRegex.test(req.body.email)) {
             console.log("Bad request from client, terminating user registration");
             return;
         }

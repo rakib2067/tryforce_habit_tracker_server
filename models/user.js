@@ -106,7 +106,8 @@ module.exports = class User
             {
                 let result = await db.query(`INSERT INTO users (name, email, password, rupees, profilePic, xp, xpTarget, level, salt)
                                                           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`, 
-                                                          [name, email, password, rupees = 0, profilePic = 0, xp = 0, xpTarget = 10, level = 0, salt])
+                                                          [name, email, password, rupees, profilePic, xp, xpTarget, level, salt])
+                console.log(`User created with ID: ${result.rows[0].id}`);
                 res(result.rows[0]);
             }
             catch (err)
