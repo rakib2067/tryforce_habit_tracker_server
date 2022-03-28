@@ -57,7 +57,7 @@ module.exports = class Habit
         {
             try 
             {
-                let result = await db.run(SQL`INSERT INTO habits (user_id, title, frequency, timestampOfLastTrack, streak, category)
+                let result = await db.query(`INSERT INTO habits (user_id, title, frequency, timestampOfLastTrack, streak, category)
                                                           VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`, 
                                                           [user_id, title, frequency, timestampOfLastTrack, streak, category]);
                 res(result.rows[0]);

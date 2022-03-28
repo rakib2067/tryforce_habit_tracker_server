@@ -53,6 +53,38 @@ module.exports = class User
         });
     }
 
+    static getByName(name)
+    {
+        return new Promise (async (res, rej) =>
+        {
+            try
+            {
+                let userData = await db.query(`SELECT * FROM users WHERE name = $1;`, [name]);
+                res (userData.rows[0]);
+            }
+            catch (err)
+            {
+                rej('User no findy');
+            }
+        });
+    }
+
+    static getByEmail(email)
+    {
+        return new Promise (async (res, rej) =>
+        {
+            try
+            {
+                let userData = await db.query(`SELECT * FROM users WHERE email = $1;`, [email]);
+                res (userData.rows[0]);
+            }
+            catch (err)
+            {
+                rej('User no findy');
+            }
+        });
+    }
+
     static async create (userData)
     {
         console.log("Creating user at user model" + userData);

@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
 
 async function getAll(req, res) 
 {
@@ -27,21 +26,30 @@ async function getById(req, res)
     };
 }
 
-async function create (req, res) 
+async function getByName(req, res) 
 {
     try 
     {
-        console.log("Now creating user at controller");
-        const salt = await bcrypt.genSalt();
-        const hashed = await bcrypt.hash(req.body.password, salt);
-        console.log("Pass salted and hashed")
-        const user = await User.create( {...req.body, password : hashed });
-        res.status(201).json(user);
+        const user = await User.getByName(req.params.name);
+        res.status(200).json(user);
     } 
     catch (err) 
     {
-        res.status(422).json({err});
-    }
+        res.status(500).send(err);
+    };
+}
+
+async function getByEmail(req, res) 
+{
+    try 
+    {
+        const user = await User.getByEmail(req.params.email);
+        res.status(200).json(user);
+    } 
+    catch (err) 
+    {
+        res.status(500).send(err);
+    };
 }
 
 async function update (req,res)
@@ -84,4 +92,4 @@ async function getHabitsByUserId (req, res)
     }
 }
 
-module.exports = { getAll, getById, create, update, destroy, getHabitsByUserId }
+module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByName, getByEmail }

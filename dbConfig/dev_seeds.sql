@@ -1,8 +1,8 @@
 INSERT INTO users (name, email, password, rupees, profilePic, xp, xpTarget, level)
 VALUES
 ('Zeiadork','Zeiadork@gmail.com','a',100,2,5,10,0),
-('Nottnott','Zeiadork@gmail.com','a',200,3,15,20,1),
-('Rakib','Zeiadork@gmail.com','a',300,1,25,30,2);
+('Nottnott','a@a.col','a',200,3,15,20,1),
+('Rakib','a@a.cob','a',300,1,25,30,2);
 
 INSERT INTO habits (user_id,title,frequency,timestampOfLastTrack,streak,category)
 VALUES
