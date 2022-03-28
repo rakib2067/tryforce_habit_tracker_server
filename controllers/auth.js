@@ -8,6 +8,12 @@ async function register (req, res)
 {
     try 
     {
+        let validRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (req.body.user.length < 8 || !req.body.email.match(validRegex)) {
+            console.log("Bad request from client, terminating user registration");
+            return;
+        }
         console.log("Now creating user at controller");
         const salt = await bcrypt.genSalt();
         const hashed = await bcrypt.hash(req.body.password, salt);
@@ -22,11 +28,11 @@ async function register (req, res)
 }
 
 
-async function login (req,res)
+async function login (req, res)
 {
     let user;
 
-    console.log("Attempting to login with : " +req.body.name + " p: " +req.body.password);
+    console.log(`User ${req.body.name} attempting to login with password ${req.body.password}`);
 
     try
     {

@@ -12,8 +12,8 @@
     "nodemon": "^2.0.4"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node --legacy-watch index.js",
+    "dev": "nodemon --legacy-watch index.js",
     "seedDev": "node dbConfig/seedDev.js"
   },
   "name": "api",
