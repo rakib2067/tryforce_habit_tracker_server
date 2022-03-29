@@ -43,11 +43,11 @@ module.exports = class User
             try
             {
                 let userData = await db.query(`SELECT * FROM users WHERE id = $1;`, [id]);
-                res (userData.rows[0]);
+                res(userData.rows[0]);
             }
             catch (err)
             {
-                rej('User no findy');
+                res();
             }
         });
     }
@@ -63,7 +63,7 @@ module.exports = class User
             }
             catch (err)
             {
-                rej('User no findy');
+                res();
             }
         });
     }
@@ -79,7 +79,7 @@ module.exports = class User
             }
             catch (err)
             {
-                rej('User no findy');
+                res();
             }
         });
     }

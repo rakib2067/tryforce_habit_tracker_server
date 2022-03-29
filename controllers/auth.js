@@ -13,19 +13,27 @@ async function register(req, res)
         let validRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         if (req.body.password.length < 8 || !validRegex.test(req.body.email) || /@/.test(req.body.username)) {
-            console.log("Bad request from client, terminating user registration");
+            console.log("Client overrode client-side register form protection, terminating user registration");
+            return;
+        }
+        if (await User.getByUsername(req.body.username)) {
+            res.status(409).send("Username already taken!");
+            return;
+        }
+        if (await User.getByEmail(req.body.email)) {
+            res.status(409).send("Email already used!");
             return;
         }
         console.log("\nNow creating user at controller");
         const salt = await bcrypt.genSalt();
         const hashed = await bcrypt.hash(req.body.password, salt);
         console.log("Pass salted and hashed")
-        const user = await User.create( {...req.body, password : hashed, salt: salt });
+        const user = await User.create( {...req.body, password : hashed});
         res.status(201).json(user);
     } 
     catch (err) 
     {
-        res.status(422).json({err});
+        res.status(500).json({err});
     }
 }
 
