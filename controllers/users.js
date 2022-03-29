@@ -24,7 +24,7 @@ async function getByEmail(req, res)
         res.status(200).json(user);
 }
 
-async function update (req,res)
+async function update(req,res)
 {
     try 
     {

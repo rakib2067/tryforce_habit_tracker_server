@@ -145,7 +145,7 @@ module.exports = class User
 
     update(updateData)
     {
-        let {id, profilePic} = updateData;
+        let profilePic = updateData;
 
         return new Promise (async (res, rej) => 
         {
