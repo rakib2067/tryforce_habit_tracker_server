@@ -46,7 +46,8 @@ module.exports = class User
             }
             catch (err)
             {
-                rej("error getting user");
+                //intentional blank response
+                res();
             }
         });
     }
@@ -62,7 +63,8 @@ module.exports = class User
             }
             catch (err)
             {
-                rej("Error getting user");
+                //intentional blank response
+                res();
             }
         });
     }
@@ -78,7 +80,8 @@ module.exports = class User
             }
             catch (err)
             {
-                rej("Error getting user");
+                //intentional blank response
+                res();
             }
         });
     }
@@ -87,19 +90,20 @@ module.exports = class User
     {
         let { username, email, password} = userData;
         let rupees = 0;
-        let profilePic = 0;
+        //profilepic ID must be 1, SQL counting is 1 based, not 0 based!
+        let profilePic = 1;
         let xp = 0;
         let xpTarget = 10;
-        let level = 0;
+        let level = 1;
 
         return new Promise (async (res,rej) => 
         {
             //console.log("Try catch create user - user model")
             try 
             {
-                let result = await db.query(`INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level)
-                                                          VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`, 
-                                                          [username, email, password, rupees, profilePic, xp, xpTarget, level])
+                let result = await db.query(`INSERT INTO users (username, email, password, rupees, profilePic, xp, level)
+                                                          VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;`, 
+                                                          [username, email, password, rupees, profilePic, xp, level])
                 console.log(`User created with ID: ${result.rows[0].id}`);
                 res(new User(result.rows[0]));
             }
@@ -143,7 +147,7 @@ module.exports = class User
         {
             try 
             {
-                const result = await db.query(`UPDATE users SET profilePic = $1 WHERE id = $2 RETURNING *;`, [ updateData.url, updateData.id ]);
+                const result = await db.query(`UPDATE users SET profilePic = $1 WHERE id = $2 RETURNING *;`, [ updateData.profilePic, updateData.id ]);
                 res(new User(result.rows[0]));
             } 
             catch (err) 

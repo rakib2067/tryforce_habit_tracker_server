@@ -29,8 +29,8 @@ async function update(req,res)
 {
     try 
     {
-        console.log(`Updating user ${req.params.id} profile picture to ${req.body.url}`)
-        const user = await User.update({id: req.params.id, url: req.body.url});
+        console.log(`Updating user ${req.params.id} profile picture to ${req.body.profilePic}`)
+        const user = await User.update(req.body);
         res.status(202).json(user);
     }
     catch (err)
