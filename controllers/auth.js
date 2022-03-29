@@ -6,12 +6,16 @@ require('dotenv').config();
 
 async function register(req, res) 
 {
+
+    console.log("register function called at controller");
+
     try 
     {
         //req.body will contain: 'username', 'email', 'password'
 
         let validRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
         if (req.body.password.length < 8 || !validRegex.test(req.body.email) || /@/.test(req.body.username)) {
             console.log("Client overrode client-side register form protection, terminating user registration");
             return;
