@@ -11,5 +11,6 @@ router.delete('/:id',usersController.destroy);
 
 router.get('/:id/habits', usersController.getHabitsByUserId);
 
+
 //Export
 module.exports = router;

@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const ProfilePic = require('../models/profilePic');
 
 async function getAll(req, res) 
 {
@@ -51,4 +52,33 @@ async function getHabitsByUserId (req, res)
         res.status(200).json(habits);
 }
 
-module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByUsername, getByEmail }
+async function getProfilePics (req, res)
+{
+        console.log("Getting profile pics - all - controller");
+        try 
+        {
+                const profilePics = await ProfilePic.all;
+                res.status(200).json(profilePics);
+        }
+        catch (err)
+        {
+                res.status(500).send(err);
+        }
+}
+
+async function getProfilePicsById (req, res)
+{
+        console.log("Getting profile pics - byId - controller");
+        try
+        {
+                const pic = await ProfilePic.getById(req.params.id);
+                res.status(200).json(pic);
+        }
+        catch (err)
+        {
+                res.status(500).send(err);
+        }
+
+}
+
+module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByUsername, getByEmail, getProfilePics, getProfilePicsById }

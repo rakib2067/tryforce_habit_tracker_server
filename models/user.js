@@ -13,7 +13,6 @@ module.exports = class User
         this.rupees = data.rupees;
         this.profilepic = data.profilepic;
         this.xp = data.xp;
-        this.xpTarget = data.xpTarget;
         this.level = data.level;
     }
 
@@ -24,13 +23,13 @@ module.exports = class User
         {
             try 
             {
-                const result = await db.query('SELECT id, username, email, rupees, profilePic, xp, xpTarget, level FROM users;')
+                const result = await db.query('SELECT id, username, email, rupees, profilePic, xp, level FROM users;')
                 const users = result.rows.map(a => new User(a));
                 res(users);
             } 
             catch (err) 
             {
-                rej("Error retrieving users")
+                rej("Error retrieving users");
             }
         });
     }
@@ -47,7 +46,7 @@ module.exports = class User
             }
             catch (err)
             {
-                res();
+                rej("error getting user");
             }
         });
     }
@@ -63,7 +62,7 @@ module.exports = class User
             }
             catch (err)
             {
-                res();
+                rej("Error getting user");
             }
         });
     }
@@ -79,7 +78,7 @@ module.exports = class User
             }
             catch (err)
             {
-                res();
+                rej("Error getting user");
             }
         });
     }
