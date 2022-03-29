@@ -15,6 +15,7 @@ module.exports = class User
         this.xp = data.xp;
         this.level = data.level;
         this.xptarget = data.xptarget;
+        this.src = data.src;
     }
 
 
@@ -24,10 +25,12 @@ module.exports = class User
         {
             try 
             {
-                const result = await db.query(`SELECT users.id, users.username, users.email, users.rupees, users.profilePic, users.level, users.xp, levels.xptarget 
+                const result = await db.query(`SELECT users.id, users.username, users.email, users.rupees, users.profilePic, profilePics.src, users.level, users.xp, levels.xptarget 
                                                 FROM users 
                                                 INNER JOIN levels 
-                                                ON users.level = levels.id;`)
+                                                ON users.level = levels.id
+                                                INNER JOIN profilePics
+                                                ON users.profilePic = profilePics.id;`)
                 const users = result.rows.map(a => new User(a));
                 res(users);
             } 
@@ -45,7 +48,13 @@ module.exports = class User
         {
             try
             {
-                let userData = await db.query(`SELECT * FROM users WHERE id = $1;`, [id]);
+                let userData = await db.query(`SELECT users.id, users.username, users.email, users.rupees, users.profilePic, profilePics.src, users.level, users.xp, levels.xptarget 
+                FROM users 
+                INNER JOIN levels 
+                ON users.level = levels.id
+                INNER JOIN profilePics
+                ON users.profilePic = profilePics.id
+                WHERE users.id = $1;`, [id]);
                 res(userData.rows[0]);
             }
             catch (err)
