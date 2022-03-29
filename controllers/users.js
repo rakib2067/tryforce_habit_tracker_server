@@ -81,4 +81,17 @@ async function getProfilePicsById (req, res)
 
 }
 
-module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByUsername, getByEmail, getProfilePics, getProfilePicsById }
+async function getXpTarget ( req, res)
+{
+        try
+        {
+                const result = await User.getXpTarget(req.params.id);
+                res.status(200).json(result);
+        }
+        catch (err)
+        {
+                res.status(500).send(err);
+        }
+}
+
+module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByUsername, getByEmail, getProfilePics, getProfilePicsById, getXpTarget }

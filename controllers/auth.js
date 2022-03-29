@@ -6,9 +6,6 @@ require('dotenv').config();
 
 async function register(req, res) 
 {
-
-    console.log("register function called at controller");
-
     try 
     {
         //req.body will contain: 'username', 'email', 'password'
@@ -28,12 +25,15 @@ async function register(req, res)
             res.status(409).send("Email already used!");
             return;
         }
-        console.log("\nNow creating user at controller");
-        const salt = await bcrypt.genSalt();
-        const hashed = await bcrypt.hash(req.body.password, salt);
-        console.log("Pass salted and hashed")
-        const user = await User.create( {...req.body, password : hashed});
-        res.status(201).json(user);
+        else
+        {
+            console.log("\nNow creating user at controller");
+            const salt = await bcrypt.genSalt();
+            const hashed = await bcrypt.hash(req.body.password, salt);
+            console.log("Pass salted and hashed")
+            const user = await User.create( {...req.body, password : hashed});
+            res.status(201).json(user);
+        }
     } 
     catch (err) 
     {
