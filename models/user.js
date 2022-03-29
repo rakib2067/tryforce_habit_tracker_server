@@ -87,9 +87,9 @@ module.exports = class User
     {
         let { username, email, password} = userData;
         let rupees = 0;
-        let profilePic = 0;
+        let profilePic = 1;
         let xp = 0;
-        let level = 0;
+        let level = 1;
 
         return new Promise (async (res,rej) => 
         {
@@ -98,7 +98,7 @@ module.exports = class User
             {
                 let result = await db.query(`INSERT INTO users (username, email, password, rupees, profilePic, xp, level)
                                                           VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;`, 
-                                                          [username, email, password, rupees, profilePic, xp, level])
+                                                          [username, email, password, rupees, profilePic, xp , level])
                 console.log(`User created with ID: ${result.rows[0].id}`);
                 res(new User(result.rows[0]));
             }
