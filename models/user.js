@@ -11,7 +11,7 @@ module.exports = class User
         this.email = data.email;
         this.password = data.password;
         this.rupees = data.rupees;
-        this.profilePic = data.profilePic;
+        this.profilepic = data.profilepic;
         this.xp = data.xp;
         this.xpTarget = data.xpTarget;
         this.level = data.level;
@@ -84,7 +84,7 @@ module.exports = class User
         });
     }
 
-    static async create (userData)
+    static async create(userData)
     {
         console.log("Creating user at user model" + userData);
         let { username, email, password} = userData;
@@ -116,9 +116,9 @@ module.exports = class User
         });
     }
 
-    destroy()
+    static destroy()
     {
-        return new Promise (async (res, rej) => 
+        return new Promise(async (res, rej) => 
         {
             try 
             {
@@ -143,15 +143,13 @@ module.exports = class User
         });
     }
 
-    update(updateData)
+    static update(updateData)
     {
-        let {id, profilePic} = updateData;
-
-        return new Promise (async (res, rej) => 
+        return new Promise(async (res, rej) => 
         {
             try 
             {
-                const result = await db.query('UPDATE users SET profilePic = $1 WHERE id = $2 RETURNING *;', [ profilePic, id ]);
+                const result = await db.query(`UPDATE users SET profilePic = $1 WHERE id = $2 RETURNING *;`, [ updateData.url, updateData.id ]);
                 res(new User(result.rows[0]));
             } 
             catch (err) 
@@ -164,7 +162,7 @@ module.exports = class User
     static habits(id)
     {
 
-        return new Promise (async (res, rej) => 
+        return new Promise(async (res, rej) => 
         {
             try 
             {

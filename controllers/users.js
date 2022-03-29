@@ -28,8 +28,8 @@ async function update(req,res)
 {
     try 
     {
-        
-        const user = await User.update(req.body);
+        console.log(`Updating user ${req.params.id} profile picture to ${req.body.url}`)
+        const user = await User.update({id: req.params.id, url: req.body.url});
         res.status(202).json(user);
     }
     catch (err)
