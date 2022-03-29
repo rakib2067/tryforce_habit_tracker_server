@@ -20,7 +20,7 @@ module.exports = class User
 
     static get all()
     {
-        return new Promise (async (res, rej) => 
+        return new Promise(async (res, rej) => 
         {
             try 
             {
@@ -38,7 +38,7 @@ module.exports = class User
 
     static getById(id)
     {
-        return new Promise (async (res, rej) =>
+        return new Promise(async (res, rej) =>
         {
             try
             {
@@ -54,7 +54,7 @@ module.exports = class User
 
     static getByUsername(name)
     {
-        return new Promise (async (res, rej) =>
+        return new Promise(async (res, rej) =>
         {
             try
             {
@@ -70,7 +70,7 @@ module.exports = class User
 
     static getByEmail(email)
     {
-        return new Promise (async (res, rej) =>
+        return new Promise(async (res, rej) =>
         {
             try
             {
@@ -145,7 +145,7 @@ module.exports = class User
 
     update(updateData)
     {
-        let profilePic = updateData;
+        let {id, profilePic} = updateData;
 
         return new Promise (async (res, rej) => 
         {

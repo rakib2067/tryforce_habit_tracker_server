@@ -78,7 +78,7 @@ async function login(req, res)
             {
                 if (err) {throw new Error ('Token Generation failed')}
                 console.log("sending token");
-                res.status(200).json({ success:true, token: token})
+                res.status(200).json({ success:true, id: user.id, token: token})
             }
             
             jwt.sign(payload, process.env.TOKENKEY, {expiresIn : 3600}, sendToken);

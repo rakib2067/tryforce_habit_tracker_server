@@ -28,6 +28,7 @@ async function update(req,res)
 {
     try 
     {
+        
         const user = await User.update(req.body);
         res.status(202).json(user);
     }
