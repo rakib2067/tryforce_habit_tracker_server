@@ -49,12 +49,12 @@ module.exports = class User
             try
             {
                 let userData = await db.query(`SELECT users.id, users.username, users.email, users.rupees, users.profilePic, profilePics.src, users.level, users.xp, levels.xptarget 
-                FROM users 
-                INNER JOIN levels 
-                ON users.level = levels.id
-                INNER JOIN profilePics
-                ON users.profilePic = profilePics.id
-                WHERE users.id = $1;`, [id]);
+                                                FROM users 
+                                                INNER JOIN levels 
+                                                ON users.level = levels.id
+                                                INNER JOIN profilePics
+                                                ON users.profilePic = profilePics.id
+                                                WHERE users.id = $1;`, [id]);
                 res(userData.rows[0]);
             }
             catch (err)
@@ -203,6 +203,39 @@ module.exports = class User
         });
     }
 
+    static async levelUp(id)
+    {
+        return new Promise(async (res, rej) => 
+        {
+            try 
+            {
+                let result = await db.query(`SELECT level FROM users WHERE id = $1`,[id] )                
+                let levelup = parseInt(result.rows[0].level) + 1;
+                let updateResult = await db.query(`UPDATE users SET level = $1 WHERE id = $2 RETURNING *;`, [ levelup, id ]);
+                res(new User(updateResult.rows[0]));
+            } 
+            catch (err) 
+            {
+                rej('User updatus yeetus wehas failus');
+            }
+        });
+    }
 
-
+    static async addXP(id)
+    {
+        return new Promise(async (res, rej) => 
+        {
+            try 
+            {
+                let result = await db.query(`SELECT xp FROM users WHERE id = $1`,[id] )                
+                let xp = parseInt(result.rows[0].xp) + 1;
+                let updateResult = await db.query(`UPDATE users SET xp = $1 WHERE id = $2 RETURNING *;`, [ xp, id ]);
+                res(new User(updateResult.rows[0]));
+            } 
+            catch (err) 
+            {
+                rej('User updatus yeetus wehas failus');
+            }
+        });
+    }
 }

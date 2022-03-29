@@ -94,4 +94,33 @@ async function getXpTarget ( req, res)
         }
 }
 
-module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByUsername, getByEmail, getProfilePics, getProfilePicsById, getXpTarget }
+
+async function levelUp(req,res)
+{
+    try 
+    {
+        console.log(`Updating user ${req.params.id} level to ${parseInt(req.body.level) + 1 }`)
+        const user = await User.levelUp(req.params.id);
+        res.status(202).json(user);
+    }
+    catch (err)
+    {
+        res.status(422);
+    }
+}
+
+async function addXp(req,res)
+{
+    try 
+    {
+        console.log(`Updating user ${req.params.id} xp to add 1 xp`)
+        const user = await User.addXp(req.params.id);
+        res.status(202).json(user);
+    }
+    catch (err)
+    {
+        res.status(422);
+    }
+}
+
+module.exports = { getAll, getById, update, destroy, getHabitsByUserId, getByUsername, getByEmail, getProfilePics, getProfilePicsById, getXpTarget, levelUp, addXp }
