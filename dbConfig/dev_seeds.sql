@@ -1,11 +1,11 @@
---INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level)
---VALUES
---('Zeiadork','Zeiadork@gmail.com','a',100,2,5,10,0,1),
---('Nottnott','a@a.col','a',200,3,15,20,1,1),
---('Rakib','a@a.cob','a',300,1,25,30,2,1);
+INSERT INTO users (username, email, password, rupees, profilePic, xp, xpTarget, level)
+VALUES
+('Zeiadork','Zeiadork@gmail.com','a',100,2,5,10,0),
+('Nottnott','a@a.col','a',200,3,15,20,1),
+('Rakib','a@a.cob','a',300,1,25,30,2);
 
---INSERT INTO habits (user_id,title,frequency,timestampOfLastTrack,streak,category)
---VALUES
---(1,'Water',5000,'2022-03-27 12:00:25',3,'Lifestyle'),
---(2,'Sleep',5000,'2022-03-26 12:00:25',4,'Lifestyle'),
---(3,'Exercise',5000,'2022-03-27 12:00:25',5,'Lifestyle');
+INSERT INTO habits (user_id,title,frequency,timestampOfLastTrack,streak,category)
+VALUES
+(1,'Water',5000,'2022-03-27 12:00:25',3,'Lifestyle'),
+(2,'Sleep',5000,'2022-03-26 12:00:25',4,'Lifestyle'),
+(3,'Exercise',5000,'2022-03-27 12:00:25',5,'Lifestyle');

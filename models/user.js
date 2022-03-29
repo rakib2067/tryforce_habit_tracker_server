@@ -24,7 +24,7 @@ module.exports = class User
         {
             try 
             {
-                const result = await db.query('SELECT id, name, email, rupees, profilePic, xp, xpTarget, level FROM users;')
+                const result = await db.query('SELECT id, username, email, rupees, profilePic, xp, xpTarget, level FROM users;')
                 const users = result.rows.map(a => new User(a));
                 res(users);
             } 
@@ -86,17 +86,12 @@ module.exports = class User
 
     static async create(userData)
     {
-        console.log("Creating user at user model" + userData);
         let { username, email, password} = userData;
         let rupees = 0;
         let profilePic = 0;
         let xp = 0;
         let xpTarget = 10;
         let level = 0;
-
-        console.log("username: " +username);
-        console.log("email: " +email);
-        console.log("password: "  +password);
 
         return new Promise (async (res,rej) => 
         {
