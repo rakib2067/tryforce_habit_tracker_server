@@ -10,9 +10,12 @@ module.exports = class Habit
         this.user_id = data.user_id;
         this.title = data.title;
         this.frequency = data.frequency;
-        this.timestampOfLastTrack = data.timestampOfLastTrack;
         this.streak = data.streak;
         this.category = data.category;
+        this.timesdone = data.timesdone;
+        this.completed = data.completed;
+        this.daysexist = data.daysexist;
+        this.dayscompleted = data.dayscompleted;
     }
 
 
@@ -56,7 +59,11 @@ module.exports = class Habit
         {
             try 
             {
-                const result = await db.query('INSERT INTO habits (user_id, title, frequency, timestampOfLastTrack, streak, category) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, 0, $4) RETURNING *;', [ habitData.id, habitData.title, habitData.frequency, habitData.category ]);
+
+
+                const result = await db.query(`INSERT INTO habits (user_id, title, frequency, streak, category, timesdone, completed, daysexist, dayscompleted ) 
+                                                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`, 
+                                                [ habitData.id, habitData.title, habitData.frequency, 0, habitData.category, 0, false, 0, 0 ]);
                 res(result.rows[0]);
             }
             catch (err)
@@ -66,7 +73,7 @@ module.exports = class Habit
         });
     }
 
-    destroy()
+    static destroy()
     {
         return new Promise (async (res, rej) => 
         {
@@ -82,14 +89,39 @@ module.exports = class Habit
         });
     }
 
-    update(updateData)
+    static updateTimesDone(updateData)
     {
-        //TODO
 
         return new Promise (async (res,rej) =>
         {
-            rej("Not implemented yet");
+            try
+            {
+                const initialFetch = await db.query('SELECT timesdone FROM habits WHERE id = $1', [updateData.id]);
+                let timesDone = parseInt(initialFetch.rows[0].timesDone) + 1;
+                let result;
+
+                if (parseInt(timesDone) >= parseInt(initialFetch.rows[0].frequency))
+                {
+                    //User did all the times in the day, update completed to true
+                    result = await db.query('UPDATE habits SET timesdone = $1, completed = true WHERE id = $2 RETURNING *;', [timesDone, updateData.id])
+                }
+                else
+                {
+                    //User not hit the target yet, only update times done
+                    result = await db.query('UPDATE habits SET timesdone = $1 WHERE id = $2 RETURNING *;', [timesDone, updateData.id])
+                }
+                
+                let updatedHabit = new Habit(result.rows[0]);
+                res(updatedHabit)
+            }
+            catch (err)
+            {
+                rej("failed to update times done");
+            }
+
         })
     }
+
+
 
 }

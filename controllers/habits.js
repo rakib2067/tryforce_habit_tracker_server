@@ -41,7 +41,7 @@ async function update (req,res)
 {
     try 
     {
-        const habit = await Habit.update(req.body);
+        const habit = await Habit.updateTimesDone(req.body);
         res.status(202).json(habit);
     }
     catch (err)
@@ -63,5 +63,7 @@ async function destroy (req, res)
         res.status(404).json({err});
     };
 }
+
+
 
 module.exports = { getAll, getById, create, update, destroy}
