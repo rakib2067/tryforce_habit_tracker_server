@@ -50,16 +50,13 @@ module.exports = class Habit
         });
     }
 
-    static create (habitData)
+    static create(habitData)
     {
-        let { user_id, title, frequency, timestampOfLastTrack, streak, category } = habitData;
         return new Promise (async (res,rej) => 
         {
             try 
             {
-                let result = await db.query(`INSERT INTO habits (user_id, title, frequency, timestampOfLastTrack, streak, category)
-                                                          VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`, 
-                                                          [user_id, title, frequency, timestampOfLastTrack, streak, category]);
+                const result = await db.query('INSERT INTO habits (user_id, title, frequency, timestampOfLastTrack, streak, category) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, 0, $4) RETURNING *;', [ habitData.id, habitData.title, habitData.frequency, habitData.category ]);
                 res(result.rows[0]);
             }
             catch (err)

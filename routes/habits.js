@@ -8,6 +8,7 @@ router.get('/', habitsController.getAll);
 router.post('/',habitsController.create);
 
 router.get('/:id', habitsController.getById);
+router.post('/:id', habitsController.create);
 router.put('/:id',habitsController.update);
 router.delete('/:id',habitsController.destroy);
 

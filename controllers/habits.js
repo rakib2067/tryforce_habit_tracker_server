@@ -30,7 +30,7 @@ async function create (req, res)
     try 
     {
         const habit = await Habit.create(req.body);
-        res.status(201).json(habit);
+        res.status(201).json({habit, success: true});
     } catch (err) 
     {
         res.status(422).json({err});

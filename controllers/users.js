@@ -46,13 +46,13 @@ async function destroy (req, res)
         res.status(204).end();
 }
 
-async function getHabitsByUserId (req, res)
+async function getHabitsByUserId(req, res)
 {
         const habits = await User.habits(req.params.id);
         res.status(200).json(habits);
 }
 
-async function getProfilePics (req, res)
+async function getProfilePics(req, res)
 {
         console.log("Getting profile pics - all - controller");
         try 
@@ -66,7 +66,7 @@ async function getProfilePics (req, res)
         }
 }
 
-async function getProfilePicsById (req, res)
+async function getProfilePicsById(req, res)
 {
         console.log("Getting profile pics - byId - controller");
         try

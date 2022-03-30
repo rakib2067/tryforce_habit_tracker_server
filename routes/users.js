@@ -15,6 +15,5 @@ router.get('/:id/xptarget', usersController.getXpTarget);
 router.put('/:id/levelup',usersController.levelUp);
 router.put('/:id/addXp',usersController.addXp);
 
-
 //Export
 module.exports = router;
