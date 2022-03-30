@@ -73,7 +73,7 @@ module.exports = class Habit
         });
     }
 
-    static destroy()
+    destroy()
     {
         return new Promise (async (res, rej) => 
         {

@@ -2,6 +2,13 @@
 const express = require('express');
 const cors = require('cors');
 
+//Task scheduling
+const cron = require('node-cron');
+const shell = require('shelljs');
+const taskScheduler = require('./taskScheduler');
+
+cron.schedule("* * * * *", function () {console.log("Scheduler tick: Time is: " + new Date().toLocaleString()) })
+
 //Server setup
 const server = express();
 server.use(cors());
