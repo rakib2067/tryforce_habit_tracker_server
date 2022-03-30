@@ -121,16 +121,6 @@ module.exports = class Habit {
           rej("Failed to give the user an exp");
         }
 
-        //give them 10 rupees
-        try
-        {
-            let rupeeResult = await User.addRupees(parseInt(initialFetch.rows[0].user_id));
-        }
-        catch (err)
-        {
-            rej("Failed to give the user some rupees");
-        }
-
         let updatedHabit = new Habit(result.rows[0]);
         res(updatedHabit);
       } catch (err) {
