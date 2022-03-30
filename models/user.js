@@ -268,4 +268,32 @@ module.exports = class User
             }
         });
     }
+
+    static addRupees(id)
+    {
+        let newRupees = 0;
+        return new Promise(async (res, rej) => 
+        {
+            // Get current value, set new rupees to = that + 1
+            try
+            {
+                let result = await db.query('SELECT rupees FROM users WHERE id = $1;', [id]);
+                newRupees = parseInt(result.rows[0].rupees) + 10;
+            }
+            catch (err)
+            {
+                rej("Couldn't get user current rupees");
+            }
+
+            try 
+            {
+                let result = await db.query('UPDATE users SET rupees = $1 WHERE id = $2;',[newRupees,id])
+                console.log("Updated user " + id + " with 10 more rupees")
+            }
+            catch (err)
+            {
+                rej("Couldn't give the user more rupees");
+            }
+        })
+    }
 }
