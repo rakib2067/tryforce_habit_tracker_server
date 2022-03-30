@@ -125,7 +125,7 @@ module.exports = class User
         });
     }
 
-    static destroy()
+    destroy()
     {
         return new Promise(async (res, rej) => 
         {
@@ -137,13 +137,21 @@ module.exports = class User
 
                 let idsDeleted = [];
 
-                habits.array.forEach( async (habit) => 
+                try
                 {
-                    idsDeleted.push(habit.title);
-                    await habit.destroy();    
-                });
+                    habits.array.forEach( async (habit) => 
+                    {
+                        idsDeleted.push(habit.title);
+                        await habit.destroy();    
+                    });
+    
+                    res(`user ${result.id} and habits ${idsDeleted} yeetus deeletus successus`)
+                }
+                catch (err)
+                {
+                    rej('Deleted user but the habits still remain... errored' + err)
+                }
 
-                res(`user ${result.id} and habits ${idsDeleted} yeetus deeletus successus`)
             } 
             catch (err) 
             {
