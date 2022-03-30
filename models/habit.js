@@ -84,21 +84,54 @@ module.exports = class Habit {
     return new Promise(async (res, rej) => {
       try {
         const initialFetch = await db.query(
-          "SELECT user_id, timesdone FROM habits WHERE id = $1",
+          "SELECT user_id, timesdone, frequency,completed FROM habits WHERE id = $1",
           [updateData.id]
         );
-        let timesDone = parseInt(initialFetch.rows[0].timesDone) + 1;
+        let isCompleted = initialFetch.rows[0].completed;
+        let timesDone;
+        if (updateData.operation == "increment") {
+          timesDone = parseInt(initialFetch.rows[0].timesdone) + 1;
+        } else if (updateData.operation == "decrement") {
+          timesDone = parseInt(initialFetch.rows[0].timesdone) - 1;
+        } else {
+          throw new Error("Invalid Operation");
+        }
         let result;
 
-        if (parseInt(timesDone) >= parseInt(initialFetch.rows[0].frequency)) {
+        if (parseInt(timesDone) == parseInt(initialFetch.rows[0].frequency)) {
           try {
             //User did all the times in the day, update completed to true
             result = await db.query(
-              "UPDATE habits SET timesdone = $1, completed = true WHERE id = $2 RETURNING *;",
+              "UPDATE habits SET timesdone = $1, completed = true,dayscompleted=dayscompleted+1 WHERE id = $2 RETURNING *;",
               [timesDone, updateData.id]
             );
+            res(new Habit(result.rows[0]));
           } catch (err) {
             rej("Failed to update times done and to completed");
+          }
+        } else if (
+          parseInt(timesDone) > parseInt(initialFetch.rows[0].frequency) ||
+          parseInt(timesDone) < 0
+        ) {
+          try {
+            // Will return just the object if user is trying to increment/decrement past the threshold
+            result = await db.query("SELECT * FROM habits WHERE id = $1;", [
+              updateData.id,
+            ]);
+            res(new Habit(result.rows[0]));
+          } catch (error) {
+            rej("Failed to respond completed");
+          }
+        } else if (isCompleted == true && updateData.operation == "decrement") {
+          try {
+            // If todays task is completed by accident and user decrements it will decrement and remove days completed and set completed false
+            result = await db.query(
+              "UPDATE habits SET dayscompleted=dayscompleted-1,completed=false,timesdone = $1 WHERE id=$2 RETURNING *;",
+              [timesDone, updateData.id]
+            );
+            res(new Habit(result.rows[0]));
+          } catch (error) {
+            rej("Could not decrement timesdone and dayscompleted");
           }
         } else {
           try {
@@ -107,11 +140,12 @@ module.exports = class Habit {
               "UPDATE habits SET timesdone = $1 WHERE id = $2 RETURNING *;",
               [timesDone, updateData.id]
             );
+            res(new Habit(result.rows[0]));
           } catch (err) {
             rej("Failed to update times done");
           }
         }
-
+        // Interpretor not reading past this line for some reason
         //Give them an xp
         try {
           let xpResult = await User.addXp(
