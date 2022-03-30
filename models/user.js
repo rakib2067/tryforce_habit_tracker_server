@@ -269,7 +269,7 @@ module.exports = class User
         });
     }
 
-    addRupees(id)
+    static addRupees(id)
     {
         let newRupees = 0;
         return new Promise(async (res, rej) => 
