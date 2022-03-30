@@ -56,7 +56,7 @@ async function destroy (req, res)
     {
         const habit= await Habit.getById(req.params.id);
         await habit.destroy();
-        res.status(204).end();
+        res.status(204).send({success: true});
     } 
     catch (err) 
     {
