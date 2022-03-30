@@ -131,6 +131,6 @@ VALUES
 (1, 'Learn python', 1, 0, 'Work', 0, false, 0, 0),
 (1, 'Do weights', 1, 3, 'Fitness', 0, false, 3, 3),
 (2, 'Cardio', 1, 4,'Fitness', 0, false, 5, 4),
-(2, 'Learn something', 1, 2,'Work', 1, true, 6, 5),
+(1, 'Learn something', 1, 9,'Work', 1, true, 6, 5),
 (3, 'Code challenges', 2, 5,'Work', 1, false, 5, 5 );
 
