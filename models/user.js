@@ -106,7 +106,6 @@ module.exports = class User
         //profilepic ID must be 1, SQL counting is 1 based, not 0 based!
         let profilePic = 1;
         let xp = 0;
-        let xpTarget = 10;
         let level = 1;
 
         return new Promise (async (res,rej) => 
@@ -208,7 +207,7 @@ module.exports = class User
         });
     }
 
-    static async levelUp(id)
+    static levelUp(id)
     {
         return new Promise(async (res, rej) => 
         {
@@ -226,14 +225,32 @@ module.exports = class User
         });
     }
 
-    static async addXP(id)
+    static addXP(id)
     {
         return new Promise(async (res, rej) => 
         {
             try 
             {
-                let result = await db.query(`SELECT xp FROM users WHERE id = $1`,[id] )                
+                let result = await db.query(`SELECT users.xp AS xp, users.level AS level, levels.xptarget AS xptarget
+                                             FROM users 
+                                             INNER JOIN levels
+                                             ON users.level = levels.id
+                                             WHERE users.id = $1`,[id] )                
                 let xp = parseInt(result.rows[0].xp) + 1;
+
+                if(parseInt(xp) >= parseInt(result.rows[0].xptarget))
+                {
+                    console.log(`User ${id} leveled up - applying now!`)
+                    try
+                    {
+                        let levelupResult = await this.levelUp(id);
+                    }
+                    catch (err)
+                    {
+                        rej("Failed to level up user");
+                    }
+                }
+
                 let updateResult = await db.query(`UPDATE users SET xp = $1 WHERE id = $2 RETURNING *;`, [ xp, id ]);
                 res(new User(updateResult.rows[0]));
             } 

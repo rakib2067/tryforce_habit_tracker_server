@@ -96,21 +96,46 @@ module.exports = class Habit
         {
             try
             {
-                const initialFetch = await db.query('SELECT timesdone FROM habits WHERE id = $1', [updateData.id]);
+                const initialFetch = await db.query('SELECT user_id, timesdone FROM habits WHERE id = $1', [updateData.id]);
                 let timesDone = parseInt(initialFetch.rows[0].timesDone) + 1;
                 let result;
 
                 if (parseInt(timesDone) >= parseInt(initialFetch.rows[0].frequency))
                 {
-                    //User did all the times in the day, update completed to true
-                    result = await db.query('UPDATE habits SET timesdone = $1, completed = true WHERE id = $2 RETURNING *;', [timesDone, updateData.id])
+                    try
+                    {
+                        //User did all the times in the day, update completed to true
+                        result = await db.query('UPDATE habits SET timesdone = $1, completed = true WHERE id = $2 RETURNING *;', [timesDone, updateData.id])
+                    }
+                    catch (err)
+                    {
+                        rej("Failed to update times done and to completed");
+                    }
                 }
                 else
                 {
-                    //User not hit the target yet, only update times done
-                    result = await db.query('UPDATE habits SET timesdone = $1 WHERE id = $2 RETURNING *;', [timesDone, updateData.id])
+                    try
+                    {
+                        //User not hit the target yet, only update times done
+                        result = await db.query('UPDATE habits SET timesdone = $1 WHERE id = $2 RETURNING *;', [timesDone, updateData.id])
+                    }
+                    catch (err)
+                    {
+                        rej("Failed to update times done");
+                    }
+
                 }
-                
+
+                //Give them an xp
+                try
+                {
+                    let xpResult = await User.addXp(parseInt(initialFetch.rows[0].user_id));
+                }
+                catch (err)
+                {
+                    rej("Failed to give the user an exp");
+                }
+                                                        
                 let updatedHabit = new Habit(result.rows[0]);
                 res(updatedHabit)
             }
@@ -118,7 +143,6 @@ module.exports = class Habit
             {
                 rej("failed to update times done");
             }
-
         })
     }
 
