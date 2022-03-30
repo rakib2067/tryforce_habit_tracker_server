@@ -84,21 +84,40 @@ module.exports = class Habit {
     return new Promise(async (res, rej) => {
       try {
         const initialFetch = await db.query(
-          "SELECT user_id, timesdone FROM habits WHERE id = $1",
+          "SELECT user_id, timesdone, frequency FROM habits WHERE id = $1",
           [updateData.id]
         );
-        let timesDone = parseInt(initialFetch.rows[0].timesDone) + 1;
+        let timesDone;
+        if (updateData.operation == "increment") {
+          timesDone = parseInt(initialFetch.rows[0].timesdone) + 1;
+        } else if (updateData.operation == "decrement") {
+          timesDone = parseInt(initialFetch.rows[0].timesdone) - 1;
+        } else {
+          throw new Error("Invalid Operation");
+        }
         let result;
 
-        if (parseInt(timesDone) >= parseInt(initialFetch.rows[0].frequency)) {
+        if (parseInt(timesDone) == parseInt(initialFetch.rows[0].frequency)) {
           try {
             //User did all the times in the day, update completed to true
             result = await db.query(
               "UPDATE habits SET timesdone = $1, completed = true WHERE id = $2 RETURNING *;",
               [timesDone, updateData.id]
             );
+            res(new Habit(result.rows[0]));
           } catch (err) {
             rej("Failed to update times done and to completed");
+          }
+        } else if (
+          parseInt(timesDone) > parseInt(initialFetch.rows[0].frequency)
+        ) {
+          try {
+            result = await db.query("SELECT * FROM habits WHERE id = $1;", [
+              updateData.id,
+            ]);
+            res(new Habit(result.rows[0]));
+          } catch (error) {
+            rej("Failed to respond completed");
           }
         } else {
           try {
@@ -107,11 +126,12 @@ module.exports = class Habit {
               "UPDATE habits SET timesdone = $1 WHERE id = $2 RETURNING *;",
               [timesDone, updateData.id]
             );
+            res(new Habit(result.rows[0]));
           } catch (err) {
             rej("Failed to update times done");
           }
         }
-
+        // Interpretor not reading past this line for some reason
         //Give them an xp
         try {
           let xpResult = await User.addXp(
