@@ -109,9 +109,11 @@ module.exports = class Habit {
             rej("Failed to update times done and to completed");
           }
         } else if (
-          parseInt(timesDone) > parseInt(initialFetch.rows[0].frequency)
+          parseInt(timesDone) > parseInt(initialFetch.rows[0].frequency) ||
+          parseInt(timesDone) < 0
         ) {
           try {
+            // Will return just the object if user is trying to increment/decrement past the threshold
             result = await db.query("SELECT * FROM habits WHERE id = $1;", [
               updateData.id,
             ]);
