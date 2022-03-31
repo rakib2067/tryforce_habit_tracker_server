@@ -79,10 +79,9 @@ async function dailyCrunch(habit)
     {
         console.log(`Habit ${habit.id} updated with successful completion.`);
     
-        console.log(`Newstreak % 10 = ${newStreak%10}`)
         if(parseInt(newStreak) % 10 === 0)
         {
-            console.log("User hit a multiple of ten streak - sending a congrats email!");
+            console.log(`User ${habit.user_id} hit a multiple of ten streak - sending a congrats email!`);
             
             //Add them to streak array
             streakArray.push(habit);
@@ -111,39 +110,119 @@ async function sendEmails()
 
 async function streakArrayProcessor()
 {
+    //If nothing in array do nothing
+    if(streakArray.length === 0)
+    {
+        console.log("nothing in streak array - doing nothing")
+        return;
+    }
+    else
+    {
+        console.log(`streak array: ${streakArray}`);
 
-    console.log(`streak array: ${streakArray}`);
+        let seen = [];
+        let appeared = false;
 
-    // This isn't working rn -> trying to remove duplicates.  I'm v tired, head no work.
-    // const filtered = [...new Set(streakArray.map(obj => JSON.stringify(obj)))]
-    //              .map(str => JSON.parse(str));
+        seen.push(streakArray[0]);
 
-    // failArray.forEach(async (unique) => 
-    // {
-    //     console.log("user id for unique:" + unique.user_id);
-    //     sendStreakEmail(unique);
-    // })
+        streakArray.forEach(async (habit) => 
+        {
 
+            console.log("Processing " + habit.title + " AT the streak array processor");
+            console.log("Seen array: " +seen);
+
+
+            for ( let i = 0; i < seen.length; i++)
+            {
+
+                if(parseInt(seen[i].user_id) === parseInt(habit.user_id))
+                {
+                    console.log (`value ${habit.user_id} exists - found ${seen[i].user_id}`)
+                    appeared = true;
+                }
+
+            }
+            if (!appeared)
+            {
+                seen.push(habit);
+            }
+
+
+            appeared = false;
+
+        });
+        
+        console.log("Send email array: " +seen)
+
+        if (seen)
+        {
+            seen.forEach(async (habit) => 
+            {
+                console.log(`sending streak email to ${habit.user_id}`);
+                await sendStreakEmail(habit);
+            })
+        }
+    }
     
+
 }
 
 async function failArrayProcessor()
 {
 
-    console.log(`fail array: ${failArray}`);
+        //If nothing in array do nothing
+    if(failArray.length === 0)
+    {
+        console.log("nothing in fail array - doing nothing")
+        return;
+    }
+    else
+    {
+        console.log(`fail array: ${failArray}`);
 
-        // This isn't working rn -> trying to remove duplicates.  I'm v tired, head no work.
-    const filtered = [...new Set(failArray.map(obj => JSON.stringify(obj)))]
-                 .map(str => JSON.parse(str));
+        let seen = [];
+        let appeared = false;
+
+        seen.push(failArray[0]);
+
+        failArray.forEach(async (habit) => 
+        {
+
+            console.log("Processing " + habit.title + " AT the streak array processor");
+            console.log("Seen array: " +seen);
 
 
-                 
-    // failArray.forEach(async (unique) => 
-    // {
-    //     console.log("user id for unique:" + unique.user_id);
-    //     sendFailEmail(unique);
-    // })
+            for ( let i = 0; i < seen.length; i++)
+            {
 
+                if(parseInt(seen[i].user_id) === parseInt(habit.user_id))
+                {
+                    console.log (`value ${habit.user_id} exists - found ${seen[i].user_id}`)
+                    appeared = true;
+                }
+
+            }
+            if (!appeared)
+            {
+                seen.push(habit);
+            }
+
+
+            appeared = false;
+
+        });
+        
+        console.log("Send email array: " +seen)
+
+        if (seen)
+        {
+            seen.forEach(async (habit) => 
+            {
+                console.log(`sending fail email to ${habit.user_id}`);
+                await sendFailEmail(habit);
+            })
+        }
+    }
 }
 
 
