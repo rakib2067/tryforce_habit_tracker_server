@@ -110,7 +110,8 @@ VALUES
 ('/images/link.png'),
 ('/images/link2.png'),
 ('/images/zelda.png'),
-('/images/zeldacdi.jpg');
+('/images/zeldacdi.jpg'),
+('/images/morshu.png');
 
 
 
