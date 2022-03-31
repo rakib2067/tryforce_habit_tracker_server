@@ -93,11 +93,11 @@ module.exports = class Habit {
         let timesDone;
         if (updateData.operation == "increment") {
           timesDone = parseInt(initialFetch.rows[0].timesdone) + 1;
-          await db.query("UPDATE users SET xp=$2 WHERE id = $1", [updateData.userid, currentXp + 5]);
+          await db.query("UPDATE users SET xp=$2 WHERE id = $1", [updateData.userid, currentXp + 25]);
         } else if (updateData.operation == "decrement") {
           timesDone = parseInt(initialFetch.rows[0].timesdone) - 1;
           if (currentXp >= 5) {
-            await db.query("UPDATE users SET xp=$2 WHERE id = $1", [updateData.userid, currentXp - 5]);
+            await db.query("UPDATE users SET xp=$2 WHERE id = $1", [updateData.userid, currentXp - 25]);
           }
         } else {
           throw new Error("Invalid Operation");
