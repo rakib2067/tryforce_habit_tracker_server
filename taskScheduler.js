@@ -232,13 +232,13 @@ async function sendFailEmail(habit)
     let testAccount = await nodemailer.createTestAccount();
     let transporter = await nodemailer.createTransport
     ({
-        host: "smtp.ethereal.email",
+        host: "smtp.gmail.com",
         port: 587,
-        secure: false,
+        secure: true,
         auth: 
         {
-            user: testAccount.user,
-            pass: testAccount.pass
+            user: "teamtryforcenavi@gmail.com",
+            pass: "Futureproof"
         }
     });
 
@@ -519,11 +519,6 @@ async function sendFailEmail(habit)
         html: content
     });
 
-    console.log("Email sent: %s", info.messageId);
-
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
-
 }
 
 async function sendStreakEmail(habit)
@@ -533,16 +528,15 @@ async function sendStreakEmail(habit)
     let testAccount = await nodemailer.createTestAccount();
     let transporter = await nodemailer.createTransport
     ({
-        host: "smtp.ethereal.email",
+        host: "smtp.gmail.com",
         port: 587,
-        secure: false,
+        secure: true,
         auth: 
         {
-            user: testAccount.user,
-            pass: testAccount.pass
+            user: "teamtryforcenavi@gmail.com",
+            pass: "Futureproof"
         }
     });
-
     let user = await db.query(`SELECT username, email FROM users WHERE id = $1;`,[habit.user_id]);
 
     let email = user.rows[0].email;
@@ -819,11 +813,6 @@ async function sendStreakEmail(habit)
         subject: "Tingle, Tingle! Kooloo-Limpah!",
         html: content
     });
-
-    console.log("Email sent: %s", info.messageId);
-
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
 
 }
 
