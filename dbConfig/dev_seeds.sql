@@ -133,5 +133,5 @@ VALUES
 (1, 'Do weights', 1, 3, 'Fitness', 0, false, 3, 3),
 (2, 'Cardio', 1, 4,'Fitness', 0, false, 5, 4),
 (1, 'Learn something', 1, 9,'Work', 1, true, 6, 5),
-(3, 'Code challenges', 2, 5,'Work', 1, false, 5, 5 );
+(3, 'Code challenges', 2, 9,'Work', 2, true, 5, 5 );
 
