@@ -105,7 +105,10 @@ module.exports = class User
         let rupees = 0;
         //profilepic ID must be 1, SQL counting is 1 based, not 0 based!
         let profilePic = 1;
-        let xp = 0;
+        //if xp starts out on 0, the clientside starts freaking out in an infinite loop in what otherwise would be perfectly fine code
+        //so start xp at 25 to make life easy :DDD
+        let xp = 25;
+        //in the final implementation serverside levels are NOT used. this level attribute is worthless
         let level = 1;
 
         return new Promise (async (res,rej) => 
