@@ -87,12 +87,18 @@ module.exports = class Habit {
           "SELECT user_id, timesdone, frequency,completed FROM habits WHERE id = $1",
           [updateData.id]
         );
+        const xpQuery = await db.query("SELECT xp FROM users WHERE id = $1", [updateData.userid]);
+        const currentXp = xpQuery.rows[0].xp;
         let isCompleted = initialFetch.rows[0].completed;
         let timesDone;
         if (updateData.operation == "increment") {
           timesDone = parseInt(initialFetch.rows[0].timesdone) + 1;
+          await db.query("UPDATE users SET xp=$2 WHERE id = $1", [updateData.userid, currentXp + 5]);
         } else if (updateData.operation == "decrement") {
           timesDone = parseInt(initialFetch.rows[0].timesdone) - 1;
+          if (currentXp >= 5) {
+            await db.query("UPDATE users SET xp=$2 WHERE id = $1", [updateData.userid, currentXp - 5]);
+          }
         } else {
           throw new Error("Invalid Operation");
         }
