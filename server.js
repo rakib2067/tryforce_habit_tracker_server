@@ -7,9 +7,8 @@ const cron = require('node-cron');
 const shell = require('shelljs');
 const taskScheduler = require('./taskScheduler');
 
-//"0 0 */3 * *"
-cron.schedule("20 * * * * *", async function () {console.log("Scheduler tick: Time is: " + new Date().toLocaleString()); taskScheduler.go();})
-cron.schedule("50 * * * * *", async function () {console.log("Email tick: Time is: " + new Date().toLocaleString()); taskScheduler.sendEmails();})
+cron.schedule("00 50 23 * * *", async function () {console.log("Scheduler tick: Time is: " + new Date().toLocaleString()); taskScheduler.go();})
+cron.schedule("00 55 23 * * * *", async function () {console.log("Email tick: Time is: " + new Date().toLocaleString()); taskScheduler.sendEmails();})
 
 //Server setup
 const server = express();
