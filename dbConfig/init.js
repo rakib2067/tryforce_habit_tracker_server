@@ -10,6 +10,6 @@ if (process.env.DATABASE_URL) {
 		}
 	}
 }
-const pool = new Pool();
+const pool = new Pool(config);
 
 module.exports = pool;
