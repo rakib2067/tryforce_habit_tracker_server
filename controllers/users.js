@@ -114,7 +114,8 @@ async function addXp(req,res)
     try 
     {
         console.log(`Updating user ${req.params.id} xp to add 1 xp`)
-        const user = await User.addXp(req.params.id);
+        const user = await User.addXP(req.params.id);
+
         res.status(202).json(user);
     }
     catch (err)

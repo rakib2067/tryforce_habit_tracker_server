@@ -107,7 +107,7 @@ module.exports = class User
         let profilePic = 1;
         //if xp starts out on 0, the clientside starts freaking out in an infinite loop in what otherwise would be perfectly fine code
         //so start xp at 25 to make life easy :DDD
-        let xp = 25;
+        let xp = 1;
         //in the final implementation serverside levels are NOT used. this level attribute is worthless
         let level = 1;
 
@@ -246,7 +246,7 @@ module.exports = class User
                                              FROM users 
                                              INNER JOIN levels
                                              ON users.level = levels.id
-                                             WHERE users.id = $1`,[id] )                
+                                             WHERE users.id = $1;`,[id] )                
                 let xp = parseInt(result.rows[0].xp) + 1;
 
                 if(parseInt(xp) >= parseInt(result.rows[0].xptarget))

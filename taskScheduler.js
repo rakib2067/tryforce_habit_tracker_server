@@ -115,8 +115,8 @@ async function streakArrayProcessor()
     console.log(`streak array: ${streakArray}`);
 
     // This isn't working rn -> trying to remove duplicates.  I'm v tired, head no work.
-    const filtered = [...new Set(streakArray.map(obj => JSON.stringify(obj)))]
-                 .map(str => JSON.parse(str));
+    // const filtered = [...new Set(streakArray.map(obj => JSON.stringify(obj)))]
+    //              .map(str => JSON.parse(str));
 
     // failArray.forEach(async (unique) => 
     // {
