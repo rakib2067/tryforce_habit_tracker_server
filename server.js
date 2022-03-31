@@ -12,7 +12,7 @@ cron.schedule("00 55 23 * * * *", async function () {console.log("Email tick: Ti
 
 //Server setup
 const server = express();
-server.use(cors({origin:true,credentials: true}));
+server.use(cors({origin:'*',credentials: true}));
 server.use(express.json());
 
 //Routes setup
